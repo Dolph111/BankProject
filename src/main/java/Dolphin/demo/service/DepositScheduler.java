@@ -1,5 +1,9 @@
-package Dolphin.demo;
+package dolphin.demo.service;
 
+import dolphin.demo.model.Deposit;
+import dolphin.demo.model.DepositStatus;
+import dolphin.demo.repository.DepositRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -8,11 +12,13 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Map;
 
+@Slf4j
 @Component
 public class DepositScheduler {
     private final DepositRepository depositRepository;
 
     public DepositScheduler(DepositRepository depositRepository) {
+
         this.depositRepository = depositRepository;
     }
 
@@ -39,10 +45,12 @@ public class DepositScheduler {
 
 
     private void returnMoneyToClient(Deposit deposit, int amount) {
-        // Реализация возврата денег клиенту
+        log.info("Refunding the customer");
+        // TODO Реализация возврата денег клиенту
     }
 
     private void sendEmailToClient(Deposit deposit) {
-        // Реализация отправки уведомления клиенту по электронной почте
+        log.info("Sending a notification to the customer by email");
+        // TODO Реализация отправки уведомления клиенту по электронной почте
     }
 }

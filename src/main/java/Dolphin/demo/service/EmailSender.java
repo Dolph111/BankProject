@@ -1,4 +1,4 @@
-package Dolphin.demo;
+package dolphin.demo.service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;

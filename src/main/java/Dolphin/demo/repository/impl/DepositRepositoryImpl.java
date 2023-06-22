@@ -1,5 +1,8 @@
-package Dolphin.demo;
+package dolphin.demo.repository.impl;
 
+import dolphin.demo.model.Deposit;
+import dolphin.demo.model.DepositStatus;
+import dolphin.demo.repository.DepositRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;

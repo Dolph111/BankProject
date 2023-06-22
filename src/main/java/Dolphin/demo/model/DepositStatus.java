@@ -1,4 +1,4 @@
-package Dolphin.demo;
+package dolphin.demo.model;
 
 public enum DepositStatus {
     CREATED,
