@@ -83,12 +83,10 @@ public class DepositController {
 
     private void withdrawMoneyFromClient(Deposit deposit) {
         log.info("Withdrawals from the client");
-        System.out.println("Реализация снятия денег с клиента");
     }
 
     private void returnMoneyToClient(Deposit deposit, int amount) {
         log.info("Refunding the customer");
-        System.out.println("Реализация возврата денег клиенту");
     }
 
 
