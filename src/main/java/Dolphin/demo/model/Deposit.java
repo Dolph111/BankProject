@@ -1,4 +1,4 @@
-package Dolphin.demo;
+package dolphin.demo.model;
 
 import lombok.Data;
 

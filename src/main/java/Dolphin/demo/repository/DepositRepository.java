@@ -1,4 +1,6 @@
-package Dolphin.demo;
+package dolphin.demo.repository;
+
+import dolphin.demo.model.Deposit;
 
 import java.util.Map;
 
