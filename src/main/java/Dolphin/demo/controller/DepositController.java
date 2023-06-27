@@ -24,19 +24,17 @@ public class DepositController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createDeposit(@RequestBody Deposit deposit) {
-        long depositId = depositRepository.createDeposit(deposit);
-        sendEmailToBankEmployee(depositId);
+        depositRepository.createDeposit(deposit);
+        sendEmailToBankEmployee(deposit);
         log.info("Deposit created");
-        return new ResponseEntity<>("Deposit created with ID: " + depositId, HttpStatus.CREATED);
+        return new ResponseEntity<>("Deposit created with ID: " + deposit.getId(), HttpStatus.CREATED);
     }
 
     @PostMapping("/approve/{depositId}")
     public ResponseEntity<String> approveDeposit(@PathVariable long depositId) {
         Deposit deposit = depositRepository.getDepositById(depositId);
         if (deposit != null && deposit.getStatus() == DepositStatus.CREATED) {
-            // тут дополнительные проверки
-
-            deposit.setStatus(DepositStatus.APPROVED);
+            depositRepository.approveDeposit(deposit);
             withdrawMoneyFromClient(deposit);
             depositRepository.saveDeposit(deposit);
             sendEmailToClient(deposit);
@@ -52,7 +50,7 @@ public class DepositController {
     public ResponseEntity<String> declineDeposit(@PathVariable long depositId) {
         Deposit deposit = depositRepository.getDepositById(depositId);
         if (deposit != null && deposit.getStatus() == DepositStatus.CREATED) {
-            deposit.setStatus(DepositStatus.DECLINED);
+            depositRepository.declineDeposit(deposit);
             sendEmailToClient(deposit);
             depositRepository.removeDeposit(depositId);
             log.info("Deposit declined");
@@ -67,7 +65,7 @@ public class DepositController {
     public ResponseEntity<String> markDepositAsDone(@PathVariable long depositId) {
         Deposit deposit = depositRepository.getDepositById(depositId);
         if (deposit != null && deposit.getStatus() == DepositStatus.APPROVED) {
-            deposit.setStatus(DepositStatus.DONE);
+            depositRepository.doneDeposit(deposit);
             returnMoneyToClient(deposit, deposit.getAmount());
             depositRepository.saveDeposit(deposit);
             sendEmailToClient(deposit);
@@ -90,14 +88,14 @@ public class DepositController {
     }
 
 
-    private void sendEmailToBankEmployee(long depositId) {
+    private void sendEmailToBankEmployee(Deposit deposit) {
         String host = "smtp.gmail.com";
         int port = 465;
         String senderEmail = "bankdeposittest@gmail.com";
         String senderPassword = "Skywalker21";
         String recipientEmail = "524dolphin524@gmail.com";
         String subject = "New Deposit Request";
-        String body = "New deposit request with ID: " + depositId;
+        String body = "New deposit request " + deposit;
 
         EmailSender emailSender = new EmailSender(host, port, senderEmail, senderPassword);
         emailSender.sendEmail(recipientEmail, subject, body);

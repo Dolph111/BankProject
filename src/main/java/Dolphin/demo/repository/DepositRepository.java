@@ -1,6 +1,7 @@
 package dolphin.demo.repository;
 
 import dolphin.demo.model.Deposit;
+import dolphin.demo.model.DepositStatus;
 
 import java.util.Map;
 
@@ -13,5 +14,11 @@ public interface DepositRepository {
 
     void removeDeposit(long depositId);
 
-    long createDeposit(Deposit deposit);
+    DepositStatus createDeposit(Deposit deposit);
+
+    DepositStatus approveDeposit(Deposit deposit);
+
+    DepositStatus declineDeposit(Deposit deposit);
+
+    DepositStatus doneDeposit(Deposit deposit);
 }

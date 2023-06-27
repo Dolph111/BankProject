@@ -16,12 +16,12 @@ public class DepositRepositoryImpl implements DepositRepository {
     private long depositIdCounter = 1;
 
     @Override
-    public long createDeposit(Deposit deposit) {
+    public DepositStatus createDeposit(Deposit deposit) {
         long depositId = depositIdCounter++;
         deposit.setCreationDate(LocalDateTime.now());
         deposit.setStatus(DepositStatus.CREATED);
         deposits.put(depositId, deposit);
-        return depositId;
+        return deposit.getStatus();
     }
 
     @Override
@@ -42,5 +42,23 @@ public class DepositRepositoryImpl implements DepositRepository {
     @Override
     public void removeDeposit(long depositId) {
         deposits.remove(depositId);
+    }
+
+    @Override
+    public DepositStatus approveDeposit(Deposit deposit){
+        deposit.setStatus(DepositStatus.APPROVED);
+        return DepositStatus.APPROVED;
+    }
+
+    @Override
+    public DepositStatus declineDeposit(Deposit deposit){
+        deposit.setStatus(DepositStatus.DECLINED);
+        return DepositStatus.DECLINED;
+    }
+
+    @Override
+    public DepositStatus doneDeposit(Deposit deposit){
+        deposit.setStatus(DepositStatus.DONE);
+        return DepositStatus.DONE;
     }
 }
