@@ -1,21 +1,47 @@
 package dolphin.demo.service;
 
+import dolphin.demo.model.Deposit;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-public class EmailSender {
+public class EmailService {
     private final String host;
     private final int port;
     private final String username;
     private final String password;
 
-    public EmailSender(String host, int port, String username, String password) {
+    public EmailService(String host, int port, String username, String password) {
         this.host = host;
         this.port = port;
         this.username = username;
         this.password = password;
+    }
+
+
+    void sendEmailToBankEmployee(Deposit deposit) {
+        String host = "smtp.gmail.com";
+        int port = 465;
+        String senderEmail = "bankdeposittest@gmail.com";
+        String senderPassword = "Skywalker21";
+        String recipientEmail = "524dolphin524@gmail.com";
+        String subject = "New Deposit Request";
+        String body = "New deposit request " + deposit;
+
+        EmailService emailSender = new EmailService(host, port, senderEmail, senderPassword);
+        emailSender.sendEmail(recipientEmail, subject, body);
+    }
+
+    void sendEmailToClient(Deposit deposit) {
+        EmailService emailSender = new EmailService("smtp.gmail.com", 465, "bankdeposittest@gmail.com",
+                "Skywalker21");
+        String to = "524dolphin524@gmail.com";
+        String subject = "Deposit Update";
+        String body = "Your deposit " + deposit.getId() + " has been " +
+                deposit.getStatus().toString();
+        emailSender.sendEmail(to, subject, body);
     }
 
     public void sendEmail(String to, String subject, String body) {
