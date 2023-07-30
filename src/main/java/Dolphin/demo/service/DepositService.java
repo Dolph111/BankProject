@@ -2,16 +2,19 @@ package dolphin.demo.service;
 
 import dolphin.demo.model.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
+@Component
 public class DepositService {
 
     MoneyTransactionManager moneyTransactionManager = new MoneyTransactionManager();
-    EmailService emailService = new EmailService();
+    EmailService emailService = new EmailService("smtp.gmail.com", 465, "bankdeposittest@gmail.com", "Skywalker21");
+
     private final Map<Long, Deposit> deposits = new HashMap<>();
     private long depositIdCounter = 1;
     public CreateDepositResponse createDeposit(Deposit deposit) {
