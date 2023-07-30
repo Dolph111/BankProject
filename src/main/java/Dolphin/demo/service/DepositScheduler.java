@@ -16,22 +16,24 @@ import java.util.Map;
 @Component
 public class DepositScheduler {
     private final DepositRepository depositRepository;
+    private final DepositService depositService;
 
-    public DepositScheduler(DepositRepository depositRepository) {
+    public DepositScheduler(DepositRepository depositRepository, DepositService depositService) {
 
         this.depositRepository = depositRepository;
+        this.depositService = depositService;
     }
 
     @Scheduled(fixedRate = 60000) // Проверять каждую минуту
     public void checkDeposits() {
-        Map<Long, Deposit> deposits = depositRepository.getDeposits();
+        Map<Long, Deposit> deposits = depositService.getDeposits();
         LocalDateTime currentDateTime = LocalDateTime.now();
 
         for (Deposit deposit : deposits.values()) {
             if (deposit.getStatus() == DepositStatus.APPROVED &&
                     convertToDateTime(deposit.getTill()).isBefore(currentDateTime)) {
                 deposit.setStatus(DepositStatus.DONE);
-                depositRepository.saveDeposit(deposit);
+                depositService.saveDeposit(deposit);
                 returnMoneyToClient(deposit, deposit.getAmount());
                 sendEmailToClient(deposit);
             }

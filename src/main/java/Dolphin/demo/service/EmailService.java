@@ -21,6 +21,7 @@ public class EmailService {
     }
 
 
+
     void sendEmailToBankEmployee(Deposit deposit) {
         String host = "smtp.gmail.com";
         int port = 465;
